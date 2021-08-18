@@ -5,6 +5,8 @@
  */
 package internshiptracker;
 
+import javax.swing.JOptionPane;
+
 /**
  *
  * @author calvy
@@ -38,7 +40,6 @@ public class Login extends javax.swing.JFrame {
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setBackground(javax.swing.UIManager.getDefaults().getColor("Button.foreground"));
         setIconImages(null);
-        setUndecorated(true);
         setResizable(false);
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
@@ -56,7 +57,6 @@ public class Login extends javax.swing.JFrame {
         getContentPane().add(jTextField1, new org.netbeans.lib.awtextra.AbsoluteConstraints(610, 290, 260, -1));
 
         jPasswordField1.setBackground(new java.awt.Color(240, 240, 240));
-        jPasswordField1.setText("jPasswordField1");
         jPasswordField1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jPasswordField1ActionPerformed(evt);
@@ -64,7 +64,7 @@ public class Login extends javax.swing.JFrame {
         });
         getContentPane().add(jPasswordField1, new org.netbeans.lib.awtextra.AbsoluteConstraints(610, 320, 260, -1));
 
-        jButton1.setBackground(new java.awt.Color(160, 160, 160));
+        jButton1.setBackground(new java.awt.Color(211, 211, 211));
         jButton1.setFont(new java.awt.Font("Dialog.plain", 1, 16)); // NOI18N
         jButton1.setForeground(new java.awt.Color(0, 0, 0));
         jButton1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Data/login.png"))); // NOI18N
@@ -77,6 +77,7 @@ public class Login extends javax.swing.JFrame {
         });
         getContentPane().add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(570, 380, 200, -1));
 
+        jButton2.setBackground(new java.awt.Color(211, 211, 211));
         jButton2.setFont(new java.awt.Font("Dialog.plain", 1, 16)); // NOI18N
         jButton2.setForeground(new java.awt.Color(0, 0, 0));
         jButton2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Data/cancel.png"))); // NOI18N
@@ -94,8 +95,10 @@ public class Login extends javax.swing.JFrame {
         jLabel1.setText("Username");
         getContentPane().add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(490, 290, -1, -1));
 
+        jLabel3.setForeground(new java.awt.Color(211, 211, 211));
         jLabel3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Data/loginpage.jpg"))); // NOI18N
         jLabel3.setIconTextGap(0);
+        jLabel3.setMinimumSize(new java.awt.Dimension(1112, 834));
         getContentPane().add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 1366, 768));
 
         pack();
@@ -107,13 +110,25 @@ public class Login extends javax.swing.JFrame {
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // TODO add your handling code here:
+        if (jTextField1.getText().equals("Calvyn") && jPasswordField1.getText().equals("admin")) {
+            setVisible(false);
+            new Home().setVisible(true);
+
+        }else{
+        JOptionPane.showMessageDialog(null,"Incorrect Username or Password. Please reenter your info.");
+        }
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         // TODO add your handling code here:
+        int a = JOptionPane.showConfirmDialog(null, "Close Application?", "Select", JOptionPane.YES_NO_OPTION);
+        if (a == 0) {
+            System.exit(0);
+        }
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void jPasswordField1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jPasswordField1ActionPerformed
+
         // TODO add your handling code here:
     }//GEN-LAST:event_jPasswordField1ActionPerformed
 
