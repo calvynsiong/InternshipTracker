@@ -5,6 +5,12 @@
  */
 package internshiptracker;
 
+import Database.ConnectionProvider;
+import java.sql.*;
+
+import java.util.UUID;
+import javax.swing.*;
+
 /**
  *
  * @author calvy
@@ -35,13 +41,18 @@ public class AddNewApplication extends javax.swing.JFrame {
         jLabel5 = new javax.swing.JLabel();
         jLabel6 = new javax.swing.JLabel();
         jButton2 = new javax.swing.JButton();
-        jTextField1 = new javax.swing.JTextField();
-        jTextField3 = new javax.swing.JTextField();
-        jTextField5 = new javax.swing.JTextField();
-        jTextField6 = new javax.swing.JTextField();
-        jComboBox1 = new javax.swing.JComboBox<>();
-        jComboBox2 = new javax.swing.JComboBox<>();
+        applicationTextField = new javax.swing.JTextField();
+        dateAppliedTextField = new javax.swing.JTextField();
+        companyTextField = new javax.swing.JTextField();
+        contactInfoTextField = new javax.swing.JTextField();
+        statusComboBox = new javax.swing.JComboBox<>();
+        durationComboBox = new javax.swing.JComboBox<>();
         jLabel7 = new javax.swing.JLabel();
+        jLabel8 = new javax.swing.JLabel();
+        jLabel9 = new javax.swing.JLabel();
+        jLabel10 = new javax.swing.JLabel();
+        jLabel11 = new javax.swing.JLabel();
+        jTextField2 = new javax.swing.JTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setLocation(new java.awt.Point(280, 150));
@@ -104,59 +115,89 @@ public class AddNewApplication extends javax.swing.JFrame {
         });
         getContentPane().add(jButton2, new org.netbeans.lib.awtextra.AbsoluteConstraints(234, 423, -1, -1));
 
-        jTextField1.setBackground(new java.awt.Color(255, 255, 255));
-        jTextField1.setFont(new java.awt.Font("Dialog", 1, 15)); // NOI18N
-        jTextField1.setForeground(new java.awt.Color(0, 0, 0));
-        getContentPane().add(jTextField1, new org.netbeans.lib.awtextra.AbsoluteConstraints(289, 94, 300, 30));
-
-        jTextField3.setBackground(new java.awt.Color(255, 255, 255));
-        jTextField3.setFont(new java.awt.Font("Dialog", 1, 15)); // NOI18N
-        jTextField3.setForeground(new java.awt.Color(0, 0, 0));
-        getContentPane().add(jTextField3, new org.netbeans.lib.awtextra.AbsoluteConstraints(289, 178, 300, 30));
-
-        jTextField5.setBackground(new java.awt.Color(255, 255, 255));
-        jTextField5.setFont(new java.awt.Font("Dialog", 1, 15)); // NOI18N
-        jTextField5.setForeground(new java.awt.Color(0, 0, 0));
-        getContentPane().add(jTextField5, new org.netbeans.lib.awtextra.AbsoluteConstraints(289, 262, 300, 30));
-
-        jTextField6.setBackground(new java.awt.Color(255, 255, 255));
-        jTextField6.setFont(new java.awt.Font("Dialog", 1, 15)); // NOI18N
-        jTextField6.setForeground(new java.awt.Color(0, 0, 0));
-        jTextField6.setPreferredSize(new java.awt.Dimension(87, 25));
-        jTextField6.addActionListener(new java.awt.event.ActionListener() {
+        applicationTextField.setBackground(new java.awt.Color(255, 255, 255));
+        applicationTextField.setFont(new java.awt.Font("Dialog", 1, 15)); // NOI18N
+        applicationTextField.setForeground(new java.awt.Color(0, 0, 0));
+        applicationTextField.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jTextField6ActionPerformed(evt);
+                applicationTextFieldActionPerformed(evt);
             }
         });
-        getContentPane().add(jTextField6, new org.netbeans.lib.awtextra.AbsoluteConstraints(289, 325, 300, 30));
+        getContentPane().add(applicationTextField, new org.netbeans.lib.awtextra.AbsoluteConstraints(289, 94, 300, 30));
 
-        jComboBox1.setBackground(new java.awt.Color(0, 0, 0));
-        jComboBox1.setEditable(true);
-        jComboBox1.setFont(new java.awt.Font("Dialog", 1, 15)); // NOI18N
-        jComboBox1.setForeground(new java.awt.Color(255, 255, 255));
-        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Pending", "Rejected", "Ignored", "Interview", "Offer" }));
-        jComboBox1.addActionListener(new java.awt.event.ActionListener() {
+        dateAppliedTextField.setBackground(new java.awt.Color(255, 255, 255));
+        dateAppliedTextField.setFont(new java.awt.Font("Dialog", 1, 15)); // NOI18N
+        dateAppliedTextField.setForeground(new java.awt.Color(0, 0, 0));
+        getContentPane().add(dateAppliedTextField, new org.netbeans.lib.awtextra.AbsoluteConstraints(289, 178, 300, 30));
+
+        companyTextField.setBackground(new java.awt.Color(255, 255, 255));
+        companyTextField.setFont(new java.awt.Font("Dialog", 1, 15)); // NOI18N
+        companyTextField.setForeground(new java.awt.Color(0, 0, 0));
+        getContentPane().add(companyTextField, new org.netbeans.lib.awtextra.AbsoluteConstraints(289, 262, 300, 30));
+
+        contactInfoTextField.setBackground(new java.awt.Color(255, 255, 255));
+        contactInfoTextField.setFont(new java.awt.Font("Dialog", 1, 15)); // NOI18N
+        contactInfoTextField.setForeground(new java.awt.Color(0, 0, 0));
+        contactInfoTextField.setPreferredSize(new java.awt.Dimension(87, 25));
+        contactInfoTextField.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jComboBox1ActionPerformed(evt);
+                contactInfoTextFieldActionPerformed(evt);
             }
         });
-        getContentPane().add(jComboBox1, new org.netbeans.lib.awtextra.AbsoluteConstraints(289, 136, 300, 30));
+        getContentPane().add(contactInfoTextField, new org.netbeans.lib.awtextra.AbsoluteConstraints(289, 325, 300, 30));
 
-        jComboBox2.setBackground(new java.awt.Color(0, 0, 0));
-        jComboBox2.setEditable(true);
-        jComboBox2.setFont(new java.awt.Font("Dialog", 1, 15)); // NOI18N
-        jComboBox2.setForeground(new java.awt.Color(255, 255, 255));
-        jComboBox2.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "4 months", "8 months", "12 months", "16 months", "Full time", "Indefinite", "Contract", "Seasonal" }));
-        jComboBox2.addActionListener(new java.awt.event.ActionListener() {
+        statusComboBox.setBackground(new java.awt.Color(0, 0, 0));
+        statusComboBox.setEditable(true);
+        statusComboBox.setFont(new java.awt.Font("Dialog", 1, 15)); // NOI18N
+        statusComboBox.setForeground(new java.awt.Color(255, 255, 255));
+        statusComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Pending", "Rejected", "Ignored", "Interview", "Offer" }));
+        statusComboBox.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jComboBox2ActionPerformed(evt);
+                statusComboBoxActionPerformed(evt);
             }
         });
-        getContentPane().add(jComboBox2, new org.netbeans.lib.awtextra.AbsoluteConstraints(289, 220, 300, 30));
+        getContentPane().add(statusComboBox, new org.netbeans.lib.awtextra.AbsoluteConstraints(289, 136, 300, 30));
+
+        durationComboBox.setBackground(new java.awt.Color(0, 0, 0));
+        durationComboBox.setEditable(true);
+        durationComboBox.setFont(new java.awt.Font("Dialog", 1, 15)); // NOI18N
+        durationComboBox.setForeground(new java.awt.Color(255, 255, 255));
+        durationComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "4 months", "8 months", "12 months", "16 months", "Full time", "Indefinite", "Contract", "Seasonal" }));
+        durationComboBox.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                durationComboBoxActionPerformed(evt);
+            }
+        });
+        getContentPane().add(durationComboBox, new org.netbeans.lib.awtextra.AbsoluteConstraints(289, 220, 300, 30));
 
         jLabel7.setForeground(new java.awt.Color(0, 0, 0));
         jLabel7.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Data/bluebackground.jpg"))); // NOI18N
         getContentPane().add(jLabel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, -1, -1));
+
+        jLabel8.setFont(new java.awt.Font("Dialog", 1, 18)); // NOI18N
+        jLabel8.setForeground(new java.awt.Color(0, 0, 0));
+        jLabel8.setText("Application");
+        getContentPane().add(jLabel8, new org.netbeans.lib.awtextra.AbsoluteConstraints(165, 99, -1, -1));
+
+        jLabel9.setFont(new java.awt.Font("Dialog", 1, 18)); // NOI18N
+        jLabel9.setForeground(new java.awt.Color(0, 0, 0));
+        jLabel9.setText("Application");
+        getContentPane().add(jLabel9, new org.netbeans.lib.awtextra.AbsoluteConstraints(165, 99, -1, -1));
+
+        jLabel10.setFont(new java.awt.Font("Dialog", 1, 18)); // NOI18N
+        jLabel10.setForeground(new java.awt.Color(0, 0, 0));
+        jLabel10.setText("Application");
+        getContentPane().add(jLabel10, new org.netbeans.lib.awtextra.AbsoluteConstraints(165, 99, -1, -1));
+
+        jLabel11.setFont(new java.awt.Font("Dialog", 1, 18)); // NOI18N
+        jLabel11.setForeground(new java.awt.Color(0, 0, 0));
+        jLabel11.setText("Application");
+        getContentPane().add(jLabel11, new org.netbeans.lib.awtextra.AbsoluteConstraints(165, 99, -1, -1));
+
+        jTextField2.setBackground(new java.awt.Color(255, 255, 255));
+        jTextField2.setFont(new java.awt.Font("Dialog", 1, 15)); // NOI18N
+        jTextField2.setForeground(new java.awt.Color(0, 0, 0));
+        getContentPane().add(jTextField2, new org.netbeans.lib.awtextra.AbsoluteConstraints(289, 94, 300, 30));
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -168,19 +209,50 @@ public class AddNewApplication extends javax.swing.JFrame {
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         // TODO add your handling code here:
+        String appId = UUID.randomUUID().toString();
+        String application = applicationTextField.getText();
+        String status = (String) statusComboBox.getSelectedItem();
+        String dateApplied = dateAppliedTextField.getText();
+        String duration = (String) durationComboBox.getSelectedItem();
+        String company = companyTextField.getText();
+        String contactInfo = contactInfoTextField.getText();
+
+        try {
+            System.out.println("Connecting database");
+            System.out.println(appId);
+
+            Connection con = ConnectionProvider.loadConnection();
+            Statement st = con.createStatement();
+            st.executeUpdate("INSERT INTO APPLICATION VALUES('" + appId + "','" + application + "','" + status + "','" + dateApplied + "','" + duration + "','" + company + "','" + contactInfo + "')");
+            JOptionPane.showMessageDialog(null, "Successfully saved application data!");
+            System.out.println("Data saved!");
+            setVisible(false);
+            new AddNewApplication().setVisible(true);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            JOptionPane.showMessageDialog(null, "Please enter data correctly!");
+            System.out.println("Failed to save application");
+        }
+
+
     }//GEN-LAST:event_jButton2ActionPerformed
 
-    private void jComboBox1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox1ActionPerformed
+    private void statusComboBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_statusComboBoxActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jComboBox1ActionPerformed
+    }//GEN-LAST:event_statusComboBoxActionPerformed
 
-    private void jComboBox2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox2ActionPerformed
+    private void durationComboBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_durationComboBoxActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jComboBox2ActionPerformed
+    }//GEN-LAST:event_durationComboBoxActionPerformed
 
-    private void jTextField6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField6ActionPerformed
+    private void contactInfoTextFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_contactInfoTextFieldActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jTextField6ActionPerformed
+    }//GEN-LAST:event_contactInfoTextFieldActionPerformed
+
+    private void applicationTextFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_applicationTextFieldActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_applicationTextFieldActionPerformed
 
     /**
      * @param args the command line arguments
@@ -192,7 +264,8 @@ public class AddNewApplication extends javax.swing.JFrame {
          * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
          */
         try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
+            for (javax.swing.UIManager.LookAndFeelInfo info
+                    : javax.swing.UIManager.getInstalledLookAndFeels()) {
                 if ("Nimbus".equals(info.getName())) {
                     javax.swing.UIManager.setLookAndFeel(info.getClassName());
                     break;
@@ -215,6 +288,14 @@ public class AddNewApplication extends javax.swing.JFrame {
         //</editor-fold>
         //</editor-fold>
         //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
@@ -225,20 +306,25 @@ public class AddNewApplication extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JTextField applicationTextField;
+    private javax.swing.JTextField companyTextField;
+    private javax.swing.JTextField contactInfoTextField;
+    private javax.swing.JTextField dateAppliedTextField;
+    private javax.swing.JComboBox<String> durationComboBox;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
-    private javax.swing.JComboBox<String> jComboBox1;
-    private javax.swing.JComboBox<String> jComboBox2;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel10;
+    private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
-    private javax.swing.JTextField jTextField1;
-    private javax.swing.JTextField jTextField3;
-    private javax.swing.JTextField jTextField5;
-    private javax.swing.JTextField jTextField6;
+    private javax.swing.JLabel jLabel8;
+    private javax.swing.JLabel jLabel9;
+    private javax.swing.JTextField jTextField2;
+    private javax.swing.JComboBox<String> statusComboBox;
     // End of variables declaration//GEN-END:variables
 }
