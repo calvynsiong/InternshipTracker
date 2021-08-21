@@ -16,6 +16,10 @@ import javax.swing.*;
  */
 public class AddDescription extends javax.swing.JFrame {
 
+    String appId;
+
+    boolean retrievedApplication = false;
+
     /**
      * Creates new form AddDescription
      */
@@ -30,40 +34,10 @@ public class AddDescription extends javax.swing.JFrame {
         statusError.setVisible(false);
         durationError.setVisible(false);
     }
-//try {
-//            closeAllErrors();
-//            Connection con = ConnectionProvider.loadConnection();
-////            Statement st = con.createStatement();
-//            PreparedStatement PS = con.prepareStatement("SELECT * FROM APPLICATION WHERE company='" + company + "'", ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_UPDATABLE);
-//            ResultSet rs = PS.executeQuery();
-////             If the query returns no data
-//            jTable1.setModel(DBUtils.resultSetToTableModel(rs));
-//
-////             Checks if empty
-//            if (!rs.first()) {
-//                System.out.println("ResultSet in empty in Java");
-//                companyError.setVisible(true);
-//            } else {
-//                closeAllErrors();
-//                do {
-//                    String data = rs.getString("application");
-//                    System.out.println(data);
-//                } while (rs.next());
-//            }
-//
-//        } catch (Exception e) {
-//            {
-//                e.printStackTrace();
-//                JOptionPane.showMessageDialog(null, "Sorry, the data was not fetched");
-//            }
-//        };
 
     private void SearchApplications(String type, String inputText, JLabel error) {
         try {
             closeAllErrors();
-            System.out.println(type);
-            System.out.println(inputText);
-            System.out.println("SELECT * FROM APPLICATION WHERE " + type + "=" + "'" + inputText + "'");
 
             Connection con = ConnectionProvider.loadConnection();
 //            Statement st = con.createStatement();
@@ -79,11 +53,15 @@ public class AddDescription extends javax.swing.JFrame {
             closeAllErrors();
             if (!rs.first()) {
                 error.setVisible(true);
-            }
-                do {
-                    String data = rs.getString("application");
-                    System.out.println(data);
-                } while (rs.next());
+            } else {
+//                allows for more information to be added to the first entry found
+                retrievedApplication = true;
+                appId = rs.getString("appId");
+            };
+            do {
+                String data = rs.getString("appId");
+                System.out.println(data);
+            } while (rs.next());
 
         } catch (Exception e) {
             {
@@ -129,7 +107,8 @@ public class AddDescription extends javax.swing.JFrame {
         jLabel1 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setLocation(new java.awt.Point(280, 150));
+        setLocation(new java.awt.Point(280, 80));
+        setUndecorated(true);
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         statusLabel.setFont(new java.awt.Font("Dialog", 1, 18)); // NOI18N
@@ -189,9 +168,13 @@ public class AddDescription extends javax.swing.JFrame {
         SaveButton.setFont(new java.awt.Font("Dialog", 0, 18)); // NOI18N
         SaveButton.setForeground(new java.awt.Color(0, 0, 0));
         SaveButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Data/save-icon--1.png"))); // NOI18N
-        SaveButton.setText("Search");
-        SaveButton.setActionCommand("Save");
+        SaveButton.setText("Save");
         SaveButton.setIconTextGap(12);
+        SaveButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                SaveButtonActionPerformed(evt);
+            }
+        });
         getContentPane().add(SaveButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(590, 460, 140, 30));
 
         jTable1.setBackground(new java.awt.Color(255, 255, 255));
@@ -341,6 +324,41 @@ public class AddDescription extends javax.swing.JFrame {
         // TODO add your handling code here:
         SearchApplications("duration", durationTextField.getText(), durationError);
     }//GEN-LAST:event_durationSearchActionPerformed
+
+    private void SaveButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_SaveButtonActionPerformed
+        // TODO add your handling code here:
+        if (retrievedApplication) {
+            String description = descriptionTextField.getText();
+            String skills = skillsTextField.getText();
+            String coverLetter;
+            String followUp;
+            coverLetter = (cvCheck.isSelected() ? "True" : "False");
+            followUp = (followUpCheck.isSelected() ? "True" : "False");
+
+            try {
+                Connection con = ConnectionProvider.loadConnection();
+                PreparedStatement PS = con.prepareStatement("INSERT INTO applicationinfo (appId,description,skills,coverLetter,followUp) VALUES(?,?,?,?,?)", ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_UPDATABLE);
+                PS.setString(1, appId);
+                PS.setString(2, description);
+                PS.setString(3, skills);
+                PS.setString(4, coverLetter);
+                PS.setString(5, followUp);
+                System.out.print(PS.toString());
+                System.out.print(" SQL update");
+                PS.executeUpdate();
+                JOptionPane.showMessageDialog(null, "Additional information added for application " + appId);
+                setVisible(false);
+                new AddDescription().setVisible(true);
+            } catch (Exception e) {
+                e.printStackTrace();
+                JOptionPane.showMessageDialog(this,"Additional was not successfully added!");
+            };
+        } else {
+            System.out.println("You need to find 1 application entry to add the application info!");
+            JOptionPane.showMessageDialog(null,"Please search for an existing application first!");
+        };
+
+    }//GEN-LAST:event_SaveButtonActionPerformed
 
     /**
      * @param args the command line arguments
