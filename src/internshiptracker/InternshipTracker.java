@@ -9,7 +9,8 @@ import Database.*;
 public class InternshipTracker {
     
     public static void main(String[] args) {
-       ConnectionProvider.loadConnection();
+      new Login().setVisible(true);
+       
         
     }
     

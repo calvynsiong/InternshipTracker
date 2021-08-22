@@ -6,6 +6,9 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import javax.swing.*;
+import java.awt.Component;
+import javax.swing.table.TableColumn;
+import javax.swing.table.TableCellRenderer;
 
 /**
  *
@@ -43,11 +46,6 @@ public class ApplicationHelperMethods {
             table.setModel(DBUtils.resultSetToTableModel(rs));
 
 //             Checks if empty
-//            System.out.println(rs.toString());
-//            System.out.println("SELECT * FROM APPLICATION WHERE " + type + "=" + "'"
-//                    + inputText + "'");
-//            System.out.println(rs.isBeforeFirst());
-            closeAllErrors();
             if (!rs.first()) {
                 error.setVisible(true);
             } else {
@@ -115,6 +113,54 @@ public class ApplicationHelperMethods {
 
         }
 
+    }
+
+    public void resizeColumnWidth(JTable table) {
+        for (int column = 0;
+                column < table.getColumnCount();
+                column++) {
+            TableColumn tableColumn = table.getColumnModel().getColumn(column);
+            int preferredWidth = tableColumn.getMinWidth();
+            int maxWidth = tableColumn.getMaxWidth();
+
+            for (int row = 0;
+                    row < table.getRowCount();
+                    row++) {
+                TableCellRenderer cellRenderer = table.getCellRenderer(row, column);
+                Component c = table.prepareRenderer(cellRenderer, row, column);
+                int width = c.getPreferredSize().width + table.getIntercellSpacing().width;
+                preferredWidth = Math.max(preferredWidth, width);
+
+                //  We've exceeded the maximum width, no need to check other rows
+                if (preferredWidth >= maxWidth) {
+                    preferredWidth = maxWidth;
+                    break;
+                }
+            }
+
+            tableColumn.setWidth(tableColumn.getWidth()+500);
+            System.out.println(preferredWidth);
+
+            System.out.println(tableColumn.getHeaderValue());
+            System.out.println(tableColumn.getWidth());
+
+        }
+    }
+
+    public void GetAllApplications(JTable table) {
+        try {
+            System.out.println("fetching");
+            Connection con = ConnectionProvider.loadConnection();
+
+            PreparedStatement PS = con.prepareStatement("SELECT application.*,coalesce(applicationinfo.description,'Empty') as description,coalesce(applicationinfo.skills,'Empty') as Skills,coalesce(applicationinfo.coverLetter,'Empty')as CoverLetter, coalesce(applicationinfo.followUp,'Empty') as FollowUp FROM application LEFT JOIN applicationinfo ON application.appId=applicationinfo.appId", ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_UPDATABLE);
+            ResultSet rs = PS.executeQuery();
+            table.setAutoResizeMode(table.AUTO_RESIZE_OFF);
+            table.setModel(DBUtils.resultSetToTableModel(rs));
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            JOptionPane.showMessageDialog(null, "Failed to fetch applications!");
+        }
     }
 
 }
