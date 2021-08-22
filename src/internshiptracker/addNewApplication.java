@@ -63,7 +63,7 @@ public class AddNewApplication extends javax.swing.JFrame {
         jButton1.setFont(new java.awt.Font("Dialog", 1, 15)); // NOI18N
         jButton1.setForeground(new java.awt.Color(0, 0, 0));
         jButton1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Data/cancel.png"))); // NOI18N
-        jButton1.setText("jButton1");
+        jButton1.setText("Close");
         jButton1.setIconTextGap(12);
         jButton1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {

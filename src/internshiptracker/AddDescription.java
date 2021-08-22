@@ -16,59 +16,15 @@ import javax.swing.*;
  */
 public class AddDescription extends javax.swing.JFrame {
 
-    String appId;
-
-    boolean retrievedApplication = false;
+    ApplicationHelperMethods helper = new ApplicationHelperMethods();
 
     /**
      * Creates new form AddDescription
      */
     public AddDescription() {
         initComponents();
-        closeAllErrors();
+        helper.closeAllErrors(companyError, statusError, durationError);
 
-    }
-
-    private void closeAllErrors() {
-        companyError.setVisible(false);
-        statusError.setVisible(false);
-        durationError.setVisible(false);
-    }
-
-    private void SearchApplications(String type, String inputText, JLabel error) {
-        try {
-            closeAllErrors();
-
-            Connection con = ConnectionProvider.loadConnection();
-//            Statement st = con.createStatement();
-            PreparedStatement PS = con.prepareStatement("SELECT * FROM APPLICATION WHERE " + type + "=" + "'" + inputText + "'", ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_UPDATABLE);
-            ResultSet rs = PS.executeQuery();
-//             If the query returns no data
-            jTable1.setModel(DBUtils.resultSetToTableModel(rs));
-
-//             Checks if empty
-            System.out.println(rs);
-
-//            System.out.println(rs.isBeforeFirst());
-            closeAllErrors();
-            if (!rs.first()) {
-                error.setVisible(true);
-            } else {
-//                allows for more information to be added to the first entry found
-                retrievedApplication = true;
-                appId = rs.getString("appId");
-            };
-            do {
-                String data = rs.getString("appId");
-                System.out.println(data);
-            } while (rs.next());
-
-        } catch (Exception e) {
-            {
-                e.printStackTrace();
-                JOptionPane.showMessageDialog(null, "Sorry, the data was not fetched");
-            }
-        };
     }
 
     /**
@@ -311,23 +267,23 @@ public class AddDescription extends javax.swing.JFrame {
 
     private void companySearchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_companySearchActionPerformed
         // TODO add your handling code here:
-        SearchApplications("company", companyTextField.getText(), companyError);
+        helper.SearchApplications("company", companyTextField.getText(), companyError, jTable1);
 
     }//GEN-LAST:event_companySearchActionPerformed
 
     private void statusSearchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_statusSearchActionPerformed
         // TODO add your handling code here:
-        SearchApplications("status", statusTextField.getText(), statusError);
+        helper.SearchApplications("status", statusTextField.getText(), statusError, jTable1);
     }//GEN-LAST:event_statusSearchActionPerformed
 
     private void durationSearchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_durationSearchActionPerformed
         // TODO add your handling code here:
-        SearchApplications("duration", durationTextField.getText(), durationError);
+        helper.SearchApplications("duration", durationTextField.getText(), durationError, jTable1);
     }//GEN-LAST:event_durationSearchActionPerformed
 
     private void SaveButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_SaveButtonActionPerformed
         // TODO add your handling code here:
-        if (retrievedApplication) {
+        if (helper.retrievedApplication) {
             String description = descriptionTextField.getText();
             String skills = skillsTextField.getText();
             String coverLetter;
@@ -337,25 +293,24 @@ public class AddDescription extends javax.swing.JFrame {
 
             try {
                 Connection con = ConnectionProvider.loadConnection();
-                PreparedStatement PS = con.prepareStatement("INSERT INTO applicationinfo (appId,description,skills,coverLetter,followUp) VALUES(?,?,?,?,?)", ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_UPDATABLE);
-                PS.setString(1, appId);
+                PreparedStatement PS = con.prepareStatement("INSERT INTO applicationinfo (appId,description,skills,coverLetter,followUp) VALUES(?,?,?,?,?) AS AppI ON duplicate key update description=AppI.description,skills=AppI.skills,coverLetter=AppI.coverLetter, followUp=AppI.followUp", ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_UPDATABLE);
+                PS.setString(1, helper.appId);
                 PS.setString(2, description);
                 PS.setString(3, skills);
                 PS.setString(4, coverLetter);
                 PS.setString(5, followUp);
-                System.out.print(PS.toString());
-                System.out.print(" SQL update");
+
                 PS.executeUpdate();
-                JOptionPane.showMessageDialog(null, "Additional information added for application " + appId);
+                JOptionPane.showMessageDialog(null, "Additional information added for application " + helper.appId);
                 setVisible(false);
                 new AddDescription().setVisible(true);
             } catch (Exception e) {
                 e.printStackTrace();
-                JOptionPane.showMessageDialog(this,"Additional was not successfully added!");
+                JOptionPane.showMessageDialog(this, "Additional was not successfully added!");
             };
         } else {
             System.out.println("You need to find 1 application entry to add the application info!");
-            JOptionPane.showMessageDialog(null,"Please search for an existing application first!");
+            JOptionPane.showMessageDialog(null, "Please search for an existing application first!");
         };
 
     }//GEN-LAST:event_SaveButtonActionPerformed
